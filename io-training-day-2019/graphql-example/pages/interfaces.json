@@ -1,0 +1,8 @@
+{
+  "books": {
+    "component": "*"
+  },
+  "books.books": {
+    "component": "Books"
+  }
+}

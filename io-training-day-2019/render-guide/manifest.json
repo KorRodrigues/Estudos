@@ -1,0 +1,23 @@
+{
+  "name": "render-guide",
+  "vendor": "agenciabluefoot",
+  "version": "0.1.0",
+  "title": "Render Guide",
+  "description": "VTEX IO Render Guide",
+  "scripts": {
+    "prereleasy": "bash pre.sh"
+  },
+  "builders": {
+    "pages": "1.x",
+    "react": "3.x"
+  },
+  "dependencies": {
+    "vtex.graphql-example": "0.x",
+    "vtex.styleguide": "9.x"
+  },
+  "mustUpdateAt": "2020-06-19",
+  "registries": [
+    "smartcheckout"
+  ],
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
+}
