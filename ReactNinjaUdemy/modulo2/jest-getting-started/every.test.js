@@ -7,7 +7,19 @@ import every from './every'
 it('every should be a function', () => {
     expect(every).to.be.a('function')
 })
-  
+
+it('every() should return true', () => {
+    expect(every()).to.be.ok
+})
+
+it('every([]) should return true', () => {
+    expect(every([])).to.be.ok
+})
+
+it('every([1]) should return true', () => {
+    expect(every([1])).to.be.ok
+})
+
 it('every([], (item) => item) should return true', () => {
     expect(every([], (item) => item)).to.be.ok
 })
