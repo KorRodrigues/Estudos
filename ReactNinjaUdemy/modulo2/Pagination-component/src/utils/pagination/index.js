@@ -1,82 +1,68 @@
 'use strict'
 
-const centerRule = ({ total, activePage }) => (
-  activePage - 1 <= 0
-    ? 1
-    : activePage === total
-      ? activePage - 2
-      : activePage - 1
-)
-
-const isNumber = (value) => typeof value === 'number'
-
-const pagination = ({ total = 1, activePage = 1 } = {}) => {
-  if (!isNumber(total)) {
+const pagination = ({total = 1, activePage = 1, visiblePages = 3} = {}) => {
+  if (typeof total !== 'number') {
     throw new TypeError('total should be a number')
   }
-
-  if (!isNumber(activePage)) {
+  if (typeof activePage !== 'number') {
     throw new TypeError('activePage should be a number')
   }
-
-  if (total <= 5) {
-    return Array.from({ length: total }, (_, i) => i + 1)
+  if (typeof visiblePages !== 'number') {
+    throw new TypeError('visiblePages should be a number')
   }
 
-  const visiblePages = 3
-  let pages = [
-    1,
-    ...Array.from({ length: visiblePages }, (_, i) => i + centerRule({ total, activePage })),
-    total
-  ]
+  const halfVisiblePages = Math.floor(visiblePages/2),
+    // get the minimum and maximum values
+    startHalfVisible = activePage - halfVisiblePages,
+    endHalfVisible = activePage + halfVisiblePages,
+    // get the amounts in start which are less than 1
+    startVisibleResidual = startHalfVisible < 1
+                        ? (startHalfVisible * -1) + 1
+                        : 0,
+    // get the amounts in end who passes the total
+    endVisibleResidual = endHalfVisible > total
+                        ? endHalfVisible - total
+                        : 0,
+    // get the start of values in middle
+    startVisible = startHalfVisible - endVisibleResidual > 0
+                    ? startHalfVisible - endVisibleResidual
+                    : 1,
+    // get the end of values in middle
+    endVisible = endHalfVisible + startVisibleResidual <= total
+                    ? endHalfVisible + startVisibleResidual
+                    : total
 
-  pages = pages.filter((page, index, array) => array.indexOf(page) === index)
+  let pages = []
 
-  let firstPage = pages[0]
-  let secondPage = pages[1]
-
-  if (secondPage === (firstPage + 2)) {
-    pages = [
-      firstPage,
-      firstPage + 1,
-      ...pages.slice(1)
-    ]
+  // iterate to create the middle points of pages
+  for (let index = startVisible; index <= endVisible ; index++) {
+    pages.push(index)
   }
 
-  let penultimatePage = pages[pages.length - 2]
-  let lastPage = pages[pages.length - 1]
-
-  if (penultimatePage === (lastPage - 2)) {
-    pages = [
-      ...pages.slice(0, -1),
-      lastPage - 1,
-      lastPage
-    ]
+  // Add the fist page if does't have
+  if (startVisible !== 1) {
+    // Add dots or 2º index
+    if (startVisible > 3) {
+      pages.unshift("...")
+    } else if (startVisible > 2) {
+      pages.unshift(2)
+    }
+    pages.unshift(1)
   }
 
-  firstPage = pages[0]
-  secondPage = pages[1]
-
-  if (secondPage > (firstPage + 2)) {
-    pages = [
-      firstPage,
-      '...',
-      ...pages.slice(1)
-    ]
-  }
-
-  penultimatePage = pages[pages.length - 2]
-  lastPage = pages[pages.length - 1]
-
-  if (penultimatePage < (lastPage - 2)) {
-    pages = [
-      ...pages.slice(0, -1),
-      '...',
-      lastPage
-    ]
+  // Add the last page if does't have
+  if (endVisible !== total) {
+    // Add dots or the penultimate
+    if (endVisible < total - 2) {
+      pages.push("...")
+    } else if (endVisible < total - 1) {
+      pages.push(total - 1)
+    }
+    pages.push(total)
   }
 
   return pages
 }
+
 
 export default pagination
