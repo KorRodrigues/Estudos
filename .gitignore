@@ -34,5 +34,6 @@ npm-debug.log
 .eslintrc
 *.orig
 yarn-error.log
+**/coverage/
 
 ReactNinjaUdemy/modulo2/jest-getting-started/coverage/
