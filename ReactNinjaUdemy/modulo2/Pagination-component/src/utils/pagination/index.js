@@ -11,31 +11,31 @@ const pagination = ({total = 1, activePage = 1, visiblePages = 3} = {}) => {
     throw new TypeError('visiblePages should be a number')
   }
 
-  const halfVisiblePages = Math.floor(visiblePages/2),
+  const halfVisiblePages = Math.floor(visiblePages / 2)
     // get the minimum and maximum values
-    startHalfVisible = activePage - halfVisiblePages,
-    endHalfVisible = activePage + halfVisiblePages,
+  const startHalfVisible = activePage - halfVisiblePages
+  const endHalfVisible = activePage + halfVisiblePages
     // get the amounts in start which are less than 1
-    startVisibleResidual = startHalfVisible < 1
+  const startVisibleResidual = startHalfVisible < 1
                         ? (startHalfVisible * -1) + 1
-                        : 0,
+                        : 0
     // get the amounts in end who passes the total
-    endVisibleResidual = endHalfVisible > total
+  const endVisibleResidual = endHalfVisible > total
                         ? endHalfVisible - total
-                        : 0,
+                        : 0
     // get the start of values in middle
-    startVisible = startHalfVisible - endVisibleResidual > 0
+  const startVisible = startHalfVisible - endVisibleResidual > 0
                     ? startHalfVisible - endVisibleResidual
-                    : 1,
+                    : 1
     // get the end of values in middle
-    endVisible = endHalfVisible + startVisibleResidual <= total
+  const endVisible = endHalfVisible + startVisibleResidual <= total
                     ? endHalfVisible + startVisibleResidual
                     : total
 
   let pages = []
 
   // iterate to create the middle points of pages
-  for (let index = startVisible; index <= endVisible ; index++) {
+  for (let index = startVisible; index <= endVisible; index++) {
     pages.push(index)
   }
 
@@ -43,7 +43,7 @@ const pagination = ({total = 1, activePage = 1, visiblePages = 3} = {}) => {
   if (startVisible !== 1) {
     // Add dots or 2º index
     if (startVisible > 3) {
-      pages.unshift("...")
+      pages.unshift('...')
     } else if (startVisible > 2) {
       pages.unshift(2)
     }
@@ -54,7 +54,7 @@ const pagination = ({total = 1, activePage = 1, visiblePages = 3} = {}) => {
   if (endVisible !== total) {
     // Add dots or the penultimate
     if (endVisible < total - 2) {
-      pages.push("...")
+      pages.push('...')
     } else if (endVisible < total - 1) {
       pages.push(total - 1)
     }
@@ -63,6 +63,5 @@ const pagination = ({total = 1, activePage = 1, visiblePages = 3} = {}) => {
 
   return pages
 }
-
 
 export default pagination
